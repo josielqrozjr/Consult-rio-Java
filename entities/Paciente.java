@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import readers.DadosCSVReaderConsulta;
+import readers.DadosCSVReaderPaciente;
+
 
 public class Paciente implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -13,11 +16,13 @@ public class Paciente implements Serializable{
     private String cpf;
     private List<Consulta> consultas;
     
+    //constructor
     public Paciente(String nome, String cpf){
         this.nome = nome;
         this.cpf = cpf;
         this.consultas = new ArrayList<>();
     }
+    //getters
     public String getNome() {
         return nome;
     }
@@ -29,9 +34,11 @@ public class Paciente implements Serializable{
     public List<Consulta> getConsultas() {
         return consultas;
     }
+    //setter
     public void adicionarConsulta(Consulta consulta) {
         consultas.add(consulta);
     }
+    // method to return the pacient's doctors it has had an appointment with
     public List<Medico> getMedicosConsultados(List<Medico> medicos) {
         List<Medico> medicosConsultados = new ArrayList<>();
 
@@ -40,14 +47,17 @@ public class Paciente implements Serializable{
             for (Medico medico : medicos) {
                 if (medico.getCodigo() == codigoMedico && !medicosConsultados.contains(medico)) {
                     medicosConsultados.add(medico);
-                    break; // Para evitar adicionar o mesmo médico mais de uma vez
+                    break; //To avoid adding the same doctor more than once
                 }
             }
         }
 
         return medicosConsultados;
     }
+    
+    //method to return the pacient's appointments it has had an appointment with
     public List<Consulta> getConsultasComMedico(Medico medico) {
+        
         List<Consulta> consultasComMedico = new ArrayList<>();
         for (Consulta consulta : consultas) {
             if (consulta.getMedico() == medico.getCodigo()) {
@@ -56,6 +66,8 @@ public class Paciente implements Serializable{
         }
         return consultasComMedico;
     }
+
+    //this method will be returning the appointments before than a certain date from a specific pacient
     public boolean ultimaConsultaAntesDe(LocalDate dataLimite) {
         if (consultas.isEmpty()) {
             return false; // Se não houver consultas, considerar como não ocorrida
@@ -64,4 +76,40 @@ public class Paciente implements Serializable{
         LocalDate ultimaConsulta = consultas.get(consultas.size() - 1).getData();
         return ultimaConsulta.isBefore(dataLimite);
     }
+    //method to get the pacients name by it's cpf
+    public static String getPacienteNomePorCPF(String cpf) {
+        List<Consulta> consultas = DadosCSVReaderConsulta.lerConsultasDoCSV();
+        List<Paciente> pacientes = DadosCSVReaderPaciente.lerPacientesDoCSV(consultas);
+        for (Paciente paciente : pacientes) {
+            if (paciente.getCpf().equals(cpf)) {
+                return paciente.getNome();
+            }
+        }
+        return "Paciente não encontrado";
+    }
+    //method to find a pacient thorugh it's code
+    public static Paciente findPacienteByCPF(List<Paciente> pacientes, String cpf) {
+        for (Paciente paciente : pacientes) {
+            if (paciente.getCpf().equals(cpf)) {
+                return paciente;
+            }
+        }
+        System.out.println("Paciente não encontrado, redirecionando de volta...");
+        return null; // Retorna null se o paciente não for encontrado
+    }
+
+    //method to find a inative patient from a certain doctor
+    public static boolean isPacienteInativo(Paciente paciente, List<Consulta> consultas, int mesesInatividade, LocalDate dataAtual) {
+        for (Consulta consulta : consultas) {
+            if (consulta.getCpfPaciente().equals(paciente.getCpf())) {
+                LocalDate dataConsulta = consulta.getData();
+                // Verifica se a consulta foi há mais de 'mesesInatividade' meses
+                if (dataConsulta.isBefore(dataAtual.minusMonths(mesesInatividade))) {
+                    return true; // Paciente está inativo há mais tempo do que o especificado
+                }
+            }
+        }
+        return false; // Paciente não está inativo há mais de 'mesesInatividade' meses
+    }
+
 }

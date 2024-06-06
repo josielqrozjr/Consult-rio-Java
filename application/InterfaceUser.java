@@ -33,11 +33,11 @@ public class InterfaceUser{
                     case 1:
                         int codigoMedico = readerInputs.read_int("Digite o código do médico: ");
                         
-                        Medico medicoSelecionado = findMedicoByCodigo(medicos, codigoMedico);
+                        Medico medicoSelecionado = Medico.findMedicoByCodigo(medicos, codigoMedico);
 
                         while (medicoSelecionado == null){
                             codigoMedico = readerInputs.read_int("Digite o código do médico: ");
-                            medicoSelecionado = findMedicoByCodigo(medicos, codigoMedico);
+                            medicoSelecionado = Medico.findMedicoByCodigo(medicos, codigoMedico);
                         }
 
                         List<String> resultLines = new ArrayList<>();
@@ -65,7 +65,7 @@ public class InterfaceUser{
                     break;
                     case 2:
                         int codigoMedicoConsulta = readerInputs.read_int("Digite o código do médico: ");
-                        Medico medicoConsulta = findMedicoByCodigo(medicos, codigoMedicoConsulta);
+                        Medico medicoConsulta = Medico.findMedicoByCodigo(medicos, codigoMedicoConsulta);
                         List<String> resultLines2 = new ArrayList<>();
 
                         if (medicoConsulta != null) {
@@ -81,7 +81,7 @@ public class InterfaceUser{
 
                                     if (consultaDate.compareTo(dataInicial) >= 0 && consultaDate.compareTo(dataFinal) <= 0) {
                                         resultLines2.add("- Data: " + consulta.getData() + ", Horário: " + consulta.getHorario() +
-                                                ", Paciente: " + getPacienteNomePorCPF(consulta.getCpfPaciente()));
+                                                ", Paciente: " + Paciente.getPacienteNomePorCPF(consulta.getCpfPaciente()));
                                     }
                                 }
                             }System.out.println("Consultas do Médico " + medicoConsulta.getNome() + " no período de "
@@ -93,7 +93,7 @@ public class InterfaceUser{
                                 
                                     if (consultaDate.compareTo(dataInicial) >= 0 && consultaDate.compareTo(dataFinal) <= 0) {
                                         System.out.println("- Data: " + consulta.getData() + ", Horário: " + consulta.getHorario() +
-                                                ", Paciente: " + getPacienteNomePorCPF(consulta.getCpfPaciente()));
+                                                ", Paciente: " + Paciente.getPacienteNomePorCPF(consulta.getCpfPaciente()));
                                     }
                                 }
                             }
@@ -113,11 +113,11 @@ public class InterfaceUser{
                     case 3:
                         String cpfPacienteConsulta = readerInputs.read_string("Digite o CPF do paciente: ");
                         
-                        Paciente pacienteConsulta = findPacienteByCPF(pacientes, cpfPacienteConsulta);
+                        Paciente pacienteConsulta =Paciente.findPacienteByCPF(pacientes, cpfPacienteConsulta);
                         //verifica se o paciente realmente existe
                         while (pacienteConsulta == null){
                             cpfPacienteConsulta = readerInputs.read_string("Digite o CPD do paciente: ");
-                            pacienteConsulta = findPacienteByCPF(pacientes, cpfPacienteConsulta);
+                            pacienteConsulta = Paciente.findPacienteByCPF(pacientes, cpfPacienteConsulta);
                         }
 
                         List<String> resultLines3 = new ArrayList<>();
@@ -145,19 +145,19 @@ public class InterfaceUser{
                         String cpfPacienteConsulta2 = readerInputs.read_string("Digite o CPF do paciente: ");
                         int codigoMedicoConsulta2 = readerInputs.read_int("Digite o código do médico: ");
                         
-                        Paciente pacienteConsulta2 = findPacienteByCPF(pacientes, cpfPacienteConsulta2);
+                        Paciente pacienteConsulta2 = Paciente.findPacienteByCPF(pacientes, cpfPacienteConsulta2);
                         //verifica se o paciente realmente existe
                         while (pacienteConsulta2 == null){
                             cpfPacienteConsulta2 = readerInputs.read_string("Digite o CPD do paciente: ");
-                            pacienteConsulta2 = findPacienteByCPF(pacientes, cpfPacienteConsulta2);
+                            pacienteConsulta2 = Paciente.findPacienteByCPF(pacientes, cpfPacienteConsulta2);
                         }
 
-                        Medico medicoConsulta2 = findMedicoByCodigo(medicos, codigoMedicoConsulta2);
+                        Medico medicoConsulta2 = Medico. findMedicoByCodigo(medicos, codigoMedicoConsulta2);
                         
-                        //verifica se o médico realmente existe
+                        //check if the doctor really exists
                         while (medicoConsulta2 == null){
                             codigoMedico = readerInputs.read_int("Digite o código do médico: ");
-                            medicoSelecionado = findMedicoByCodigo(medicos, codigoMedicoConsulta2);
+                            medicoSelecionado = Medico.findMedicoByCodigo(medicos, codigoMedicoConsulta2);
                         }
 
                         List<String> resultLines4 = new ArrayList<>();
@@ -193,14 +193,14 @@ public class InterfaceUser{
 
                         for (Consulta consulta : consultas) {
                             if (consulta.getCpfPaciente().equals(cpfPaciente3) && consulta.getData().isAfter(LocalDate.now())) {
-                                String nomeMedico = getMedicoNomePorCodigo(medicos, consulta);
+                                String nomeMedico = Medico.getMedicoNomePorCodigo(medicos, consulta);
                                 if (nomeMedico != null) {
                                     resultLines5.add("- Data: " + consulta.getData() + ", Horário: " + consulta.getHorario() +
                                             ", Médico: " + nomeMedico);
                                 }
                             }
                         }
-                        imprimirConsultasFuturasPorPaciente(consultas, medicos, cpfPaciente3);
+                        Consulta.imprimirConsultasFuturasPorPaciente(consultas, medicos, cpfPaciente3);
 
                         txt = readerInputs.read_int("\nGostaria de imprimir os resultados em um arquivo texto?\nSe sim digite 1, do contrário 0 para encerrar: ");
                         if (txt == 1) {
@@ -215,12 +215,12 @@ public class InterfaceUser{
                     case 6:
                         int codigoMedicoConsulta4 = readerInputs.read_int("Digite o código do médico: ");
                         
-                        Medico medicoConsulta4 = findMedicoByCodigo(medicos, codigoMedicoConsulta4);
+                        Medico medicoConsulta4 = Medico.findMedicoByCodigo(medicos, codigoMedicoConsulta4);
                         
                         //verifica se o médico realmente existe
                         while (medicoConsulta4 == null){
                             codigoMedicoConsulta4 = readerInputs.read_int("Digite o código do médico: ");
-                            medicoConsulta4 = findMedicoByCodigo(medicos, codigoMedicoConsulta4);
+                            medicoConsulta4 = Medico.findMedicoByCodigo(medicos, codigoMedicoConsulta4);
                         }
 
                         List<String> resultLines6 = new ArrayList<>();
@@ -257,65 +257,6 @@ public class InterfaceUser{
         }
         catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
-        }
-    }
-
-    private static Medico findMedicoByCodigo(List<Medico> medicos, int codigo) {
-        for (Medico medico : medicos) {
-            if (medico.getCodigo() == codigo) {
-                return medico;
-            }
-        }
-        System.out.println("Médico não encontrado, redirecionando de volta...");
-        return null; // Médico não encontrado
-    }
-
-    private static String getPacienteNomePorCPF(String cpf) {
-        List<Consulta> consultas = DadosCSVReaderConsulta.lerConsultasDoCSV();
-        List<Paciente> pacientes = DadosCSVReaderPaciente.lerPacientesDoCSV(consultas);
-        for (Paciente paciente : pacientes) {
-            if (paciente.getCpf().equals(cpf)) {
-                return paciente.getNome();
-            }
-        }
-        return "Paciente não encontrado";
-    }
-    //case 3
-    private static Paciente findPacienteByCPF(List<Paciente> pacientes, String cpf) {
-        for (Paciente paciente : pacientes) {
-            if (paciente.getCpf().equals(cpf)) {
-                return paciente;
-            }
-        }
-        System.out.println("Paciente não encontrado, redirecionando de volta...");
-        return null; // Retorna null se o paciente não for encontrado
-    }
-    // Método para retornar o nome do médico com base no código da consulta (apenas para consultas futuras)
-    private static String getMedicoNomePorCodigo(List<Medico> medicos, Consulta consulta) {
-        int codigoMedico = consulta.getMedico();
-
-        for (Medico medico : medicos) {
-            if (medico.getCodigo() == codigoMedico) {
-                return medico.getNome();
-            }
-        }
-
-        return null; // Retorna null se o médico não for encontrado
-    }
-    //case 5
-    private static void imprimirConsultasFuturasPorPaciente(List<Consulta> consultas, List<Medico> medicos, String cpfPaciente) {
-        LocalDate dataAtual = LocalDate.now();
-
-        System.out.println("Consultas agendadas para o Paciente com CPF " + cpfPaciente + ":");
-
-        for (Consulta consulta : consultas) {
-            if (consulta.getCpfPaciente().equals(cpfPaciente) && consulta.getData().isAfter(dataAtual)) {
-                String nomeMedico = getMedicoNomePorCodigo(medicos, consulta);
-                if (nomeMedico != null) {
-                    System.out.println("- Data: " + consulta.getData() + ", Horário: " + consulta.getHorario() +
-                            ", Médico: " + nomeMedico);
-                }
-            }
         }
     }
 
