@@ -1,9 +1,16 @@
 package entities;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.*;
 
-import readers.*;
+import readers.readersCSV.DadosCSVReaderConsulta;
+import readers.readersCSV.DadosCSVReaderPaciente;
 
 public class Medico {
     private String nome;
@@ -85,5 +92,23 @@ public class Medico {
         }
     
         return pacientesInativos;
+    }
+
+    //from here on the persistance of the objects will be done
+    public void salvar(String nome_arquivo) throws IOException {
+        FileOutputStream arquivo = new FileOutputStream(nome_arquivo);
+        ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+        gravador.writeObject(this);
+        gravador.close();
+        arquivo.close();
+    }
+    public static Time abrir(String nome_arquivo) throws IOException, ClassNotFoundException {
+        Time time = null;
+        FileInputStream arquivo = new FileInputStream(nome_arquivo);
+        ObjectInputStream restaurador = new ObjectInputStream(arquivo);
+        time = (Time) restaurador.readObject();
+        restaurador.close();
+        arquivo.close();
+        return time;
     }
 }

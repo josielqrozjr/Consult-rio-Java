@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import readers.DadosCSVReaderConsulta;
-import readers.DadosCSVReaderPaciente;
+import readers.readersCSV.DadosCSVReaderConsulta;
+import readers.readersCSV.DadosCSVReaderPaciente;
 
 
 public class Paciente implements Serializable{

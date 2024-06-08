@@ -1,4 +1,4 @@
-package readers;
+package readers.readersCSV;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import entities.Consulta;
 public class DadosCSVReaderConsulta {
 	public static List<Consulta> lerConsultasDoCSV() {
         
-		String caminho_arquivo = "C:\\Users\\joaov_er3oeo2\\OneDrive - Grupo Marista\\Nova pasta\\Desktop\\Workspace\\ProjetoJava\\informacoes\\consultas.csv";
+		String caminho_arquivo = "C:\\Users\\joaov_er3oeo2\\OneDrive - Grupo Marista\\Nova pasta\\Desktop\\Workspace\\java\\ProjetoJava\\informacoes\\consultas.csv";
 		
 		List<Consulta> consultas = new ArrayList<Consulta>();
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(caminho_arquivo), "UTF-8"))) {

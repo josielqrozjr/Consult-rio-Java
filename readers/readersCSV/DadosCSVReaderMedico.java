@@ -1,4 +1,4 @@
-package readers;
+package readers.readersCSV;
 
 import java.io.*;
 import java.util.*;
