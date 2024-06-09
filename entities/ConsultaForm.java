@@ -18,6 +18,7 @@ public class ConsultaForm extends JFrame {
     public ConsultaForm() {
         // Configurações do JFrame
         setTitle("Cadastro de Consulta");
+        //setTitle("Gerenciador de Consultas");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(5, 2));
