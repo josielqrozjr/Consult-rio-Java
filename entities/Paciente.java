@@ -1,5 +1,10 @@
 package entities;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -110,6 +115,31 @@ public class Paciente implements Serializable{
             }
         }
         return false; // Paciente não está inativo há mais de 'mesesInatividade' meses
+    }
+
+     // Method to read a list of consultations from a file
+     @SuppressWarnings("unchecked")
+    public static List<Paciente> abrirPacientes(String nome_arquivo) throws IOException, ClassNotFoundException {
+        List<Paciente> pacientes = null;
+        FileInputStream arquivo = new FileInputStream(nome_arquivo);
+        ObjectInputStream restaurador = new ObjectInputStream(arquivo);
+
+        pacientes = (List<Paciente>)restaurador.readObject();
+        
+        restaurador.close();
+        arquivo.close();
+        
+        return pacientes;
+    }
+
+    public static void salvarListaDePacientes(List<Paciente> paciente, String nome_arquivo) throws IOException, Exception{
+
+        FileOutputStream arquivo = new FileOutputStream(nome_arquivo);
+        ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+        gravador.writeObject(paciente);
+        
+        gravador.close();
+        arquivo.close();
     }
 
 }

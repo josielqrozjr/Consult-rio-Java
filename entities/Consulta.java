@@ -14,6 +14,7 @@ public class Consulta implements Serializable{
     private static final long serialVersionUID = 1L;
     private LocalDate data;
     private LocalTime horario;
+
     private int medico;
     private String cpfPaciente;
 
@@ -34,6 +35,7 @@ public class Consulta implements Serializable{
     }
 
     public int getMedico() {
+        //Medico name = name.findMedicoByCodigo(, this.medico);
         return medico;
     }
     public String getCpfPaciente() {
@@ -74,12 +76,22 @@ public class Consulta implements Serializable{
         FileInputStream arquivo = new FileInputStream(nome_arquivo);
         ObjectInputStream restaurador = new ObjectInputStream(arquivo);
 
-        consultas = (List<Consulta>) restaurador.readObject();
+        consultas = (List<Consulta>)restaurador.readObject();
         
         restaurador.close();
         arquivo.close();
         
         return consultas;
+    }
+
+    public static void salvarListaDeConsultas(List<Consulta> consultas, String nome_arquivo) throws IOException, Exception{
+
+        FileOutputStream arquivo = new FileOutputStream(nome_arquivo);
+        ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+        gravador.writeObject(consultas);
+        
+        gravador.close();
+        arquivo.close();
     }
 }
 

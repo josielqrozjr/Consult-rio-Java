@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.*;
@@ -12,7 +13,7 @@ import java.util.*;
 import readers.readersCSV.DadosCSVReaderConsulta;
 import readers.readersCSV.DadosCSVReaderPaciente;
 
-public class Medico {
+public class Medico implements Serializable{
     private String nome;
     private int codigo;
     private List<Paciente> pacientes;
@@ -110,5 +111,30 @@ public class Medico {
         restaurador.close();
         arquivo.close();
         return time;
+    }
+
+        // Method to read a list of consultations from a file
+    @SuppressWarnings("unchecked")
+    public static List<Medico> abrirMedicos(String nome_arquivo) throws IOException, ClassNotFoundException {
+        List<Medico> medicos = null;
+        FileInputStream arquivo = new FileInputStream(nome_arquivo);
+        ObjectInputStream restaurador = new ObjectInputStream(arquivo);
+
+        medicos = (List<Medico>)restaurador.readObject();
+        
+        restaurador.close();
+        arquivo.close();
+        
+        return medicos;
+    }
+
+    public static void salvarListaDeMedicos(List<Medico> medicos, String nome_arquivo) throws IOException, Exception{
+
+        FileOutputStream arquivo = new FileOutputStream(nome_arquivo);
+        ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
+        gravador.writeObject(medicos);
+        
+        gravador.close();
+        arquivo.close();
     }
 }

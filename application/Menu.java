@@ -7,22 +7,45 @@ package application;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import entities.Consulta;
+import entities.*;
 
 /**
  *
  * @author queirozjr
  */
 public class Menu extends javax.swing.JFrame {
-
+    
+    private List<Consulta> consultas;
+    private List<Paciente> pacientes;
+    private List<Medico> medicos;    
+    
     /**
      * Creates new form Menu
      */
     public Menu() {
         initComponents();
+ 
+    }
+
+    public Menu(List<Consulta> consultas, List<Paciente> pacientes, List<Medico> medicos) {
+        this.consultas = consultas;
+        this.pacientes = pacientes;
+        this.medicos = medicos;
+    }
+
+    public static  List<Consulta> recebeConsultas(List<Consulta> consultas){
+        return consultas;
+    }
+
+    public static List<Paciente> recebePacientes(List<Paciente> pacientes){
+        return pacientes;
+    }
+    public static List<Medico> recebeMedicos(List<Medico> medicos){
+        return medicos;
     }
 
     /**
@@ -32,7 +55,7 @@ public class Menu extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
-    private void initComponents() {
+    public void initComponents() {
 
         setTitle("Gerenciador de Consultas");
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -515,7 +538,8 @@ public class Menu extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+
+    public static void criar_interface() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

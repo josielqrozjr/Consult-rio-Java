@@ -11,8 +11,10 @@ import entities.Consulta;
 public class DadosCSVReaderConsulta {
 	public static List<Consulta> lerConsultasDoCSV() {
         
-		String caminho_arquivo = "C:\\Users\\joaov_er3oeo2\\OneDrive - Grupo Marista\\Nova pasta\\Desktop\\Workspace\\java\\ProjetoJava\\informacoes\\consultas.csv";
-		
+		// String caminho_arquivo = "C:\\Users\\joaov_er3oeo2\\OneDrive - Grupo Marista\\Nova pasta\\Desktop\\Workspace\\java\\ProjetoJava\\informacoes\\consultas.csv";
+		String caminho_arquivo = "C:\\Users\\Samsung\\OneDrive - Grupo Marista\\3º Período\\Programação Orientada a Objetos\\Trabalho RA3\\Consult-rio-Java-POO-3\\informacoes\\consultas.csv";
+		// String caminho_arquivo = "Consult-rio-Java-POO-3\\informacoes\\consultas.csv";
+
 		List<Consulta> consultas = new ArrayList<Consulta>();
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(caminho_arquivo), "UTF-8"))) {
 			
