@@ -7,8 +7,10 @@ package application;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import entities.*;
@@ -26,15 +28,24 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
+
+     /* 
     public Menu() {
         initComponents();
  
+    }
+    */
+    
+    // Caso queira apagar este construtor é necessário ir no "InterfaceUser" e quando for instanciar Menu passar as três listas, com isso o programa passa a utilizar o contrutor abaixo
+    public Menu() {
+        this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     public Menu(List<Consulta> consultas, List<Paciente> pacientes, List<Medico> medicos) {
         this.consultas = consultas;
         this.pacientes = pacientes;
         this.medicos = medicos;
+        initComponents();
     }
 
     public static  List<Consulta> recebeConsultas(List<Consulta> consultas){
@@ -193,8 +204,27 @@ public class Menu extends javax.swing.JFrame {
                 cButtonActionPerformed(evt);
             }
         });
+        
+        /*
+        for(int i = 0; i < medicos.size(); i++){
+            Medico medico = medicos.get(i);
+            String nome_medico = medico.getNome();
+            String[] = nome_medico;
+        } 
+        */
+        
+        // Criando um array de Strings para armazenar os nomes dos médicos
+        String[] nomesMedicos = new String[medicos.size()];
 
-        cSelectMedico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        // Percorrendo a lista de médicos e preenchendo o array de Strings
+        for (int i = 0; i < medicos.size(); i++) {
+            nomesMedicos[i] = medicos.get(i).getNome();
+        }
+
+        // cSelectMedico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+
+        cSelectMedico.setModel(new javax.swing.DefaultComboBoxModel<>(nomesMedicos));
         cSelectMedico.setSize(new java.awt.Dimension(64, 21));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -313,7 +343,8 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        aSelectMedico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        aSelectMedico.setModel(new javax.swing.DefaultComboBoxModel<>(nomesMedicos));
+        // aSelectMedico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         aSelectMedico.setSize(new java.awt.Dimension(64, 21));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -539,7 +570,7 @@ public class Menu extends javax.swing.JFrame {
      * @param args the command line arguments
      */
 
-    public static void criar_interface() {
+    public void criar_interface(List<Consulta> consultas, List<Paciente> pacientes, List<Medico> medicos) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -566,7 +597,7 @@ public class Menu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Menu().setVisible(true);
+                new Menu(consultas, pacientes, medicos).setVisible(true);
             }
         });
     }

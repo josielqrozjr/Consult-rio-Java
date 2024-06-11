@@ -26,9 +26,27 @@ public class InterfaceUser{
             System.out.println("Consultas de " + nome_do_arquivo_pacientes + " recuperadas com successo!");
             System.out.println("Consultas de " + nome_do_arquivo_medicos + " recuperadas com successo!");
 
-            Menu menu = new Menu(consultas, pacientes, medicos);
+            // Instaciando um objeto da classe Menu
+            Menu menu = new Menu();
 
-            Menu.criar_interface();
+            // Passando como parâmetro para o método as listas lidas dos binários
+            menu.criar_interface(consultas, pacientes, medicos);
+
+            // --=-=-=-=-=-=-=-=- TESTE -=-=-=-=-=-=-=-=-=-=
+            /* -=-=- Para testar se a leitura e o armazenamento em listas está correto -=-=-
+            // Criando um array de Strings para armazenar os nomes dos médicos
+            String[] nomesMedicos = new String[medicos.size()];
+
+            // Percorrendo a lista de médicos e preenchendo o array de Strings
+            for (int i = 0; i < medicos.size(); i++) {
+                nomesMedicos[i] = medicos.get(i).getNome();
+            }
+
+            // Imprimindo o array de nomes para verificar
+            for (String nome : nomesMedicos) {
+                System.out.println(nome);
+            }
+            */
 
 
         } 
@@ -40,16 +58,5 @@ public class InterfaceUser{
             System.out.println("Excecao de classe desconhecida");
             e.printStackTrace();
         }
-
-        /* 
-        for(Consulta consulta : consultas){
-           System.out.println(Medico.getMedicoNomePorCodigo(medicos, consulta));
-        }
-        */
-
-        // Fomulário...
- 
-
-
     }           
 }
