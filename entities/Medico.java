@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.*;
-
 import readers.readersCSV.DadosCSVReaderConsulta;
 import readers.readersCSV.DadosCSVReaderPaciente;
 
@@ -21,7 +20,7 @@ public class Medico implements Serializable{
     //constructor
     public Medico(String nome, int codigo){
         this.nome  = nome;
-        this.codigo = codigo;
+        this.codigo = codigo; 
         this.pacientes = new ArrayList<>();
     }
     //getters
@@ -73,6 +72,15 @@ public class Medico implements Serializable{
         for (Medico medico : medicos) {
             if (medico.getCodigo() == codigoMedico) {
                 return medico.getNome();
+            }
+        }
+        return null; // Retorna null se o médico não for encontrado
+    }
+
+    public static Integer getCodigoMedicoPorNome(List<Medico> medicos, String nomeMedico) {
+        for (Medico medico : medicos) {
+            if (medico.getNome().equals(nomeMedico)) {
+                return medico.getCodigo();
             }
         }
         return null; // Retorna null se o médico não for encontrado

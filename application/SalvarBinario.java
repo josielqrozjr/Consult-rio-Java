@@ -1,9 +1,8 @@
 package application;
 
+import entities.*;
 import java.io.IOException;
 import java.util.*;
-
-import entities.*;
 import readers.readersCSV.DadosCSVReaderConsulta;
 import readers.readersCSV.DadosCSVReaderMedico;
 import readers.readersCSV.DadosCSVReaderPaciente;
@@ -23,7 +22,7 @@ public class SalvarBinario{
 
         // Salva os dados lidos no CSV no arquivo binário
         try {
-            Consulta.salvarListaDeConsultas(consultas, nome_do_arquivo_consultas);
+            Consulta.salvarListaDeConsultas(consultas);
             Paciente.salvarListaDePacientes(pacientes, nome_do_arquivo_pacientes);
             Medico.salvarListaDeMedicos(medicos, nome_do_arquivo_medicos);
 

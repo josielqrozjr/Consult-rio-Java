@@ -59,16 +59,6 @@ public class Consulta implements Serializable{
         }
     }
 
-    //from here on the persistance of the objects will be done
-    public void salvarConsultas(String nome_arquivo) throws IOException {
-        FileOutputStream arquivo = new FileOutputStream(nome_arquivo);
-        ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
-        
-        gravador.writeObject(this);
-        
-        gravador.close();
-        arquivo.close();
-    }
      // Method to read a list of consultations from a file
      @SuppressWarnings("unchecked")
     public static List<Consulta> abrirConsultas(String nome_arquivo) throws IOException, ClassNotFoundException {
@@ -84,16 +74,30 @@ public class Consulta implements Serializable{
         return consultas;
     }
 
-    public static void salvarListaDeConsultas(List<Consulta> consultas, String nome_arquivo) throws IOException, Exception{
+    public static void salvarListaDeConsultas(List<Consulta> consultas) throws IOException, Exception{
 
-        FileOutputStream arquivo = new FileOutputStream(nome_arquivo);
+        String nome_do_arquivo = "consultas.bin";
+        FileOutputStream arquivo = new FileOutputStream(nome_do_arquivo);
         ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
         gravador.writeObject(consultas);
         
         gravador.close();
         arquivo.close();
     }
+
+    public static List<Consulta> getConsultasNaData(List<Consulta> consultas, LocalDate data) throws Exception{
+    
+    List<Consulta> consultasBuscadas = null;
+
+    for (Consulta consulta : consultas) {
+        if (consulta.getData().equals(data)) {
+            consultasBuscadas.add(consulta);
+        }
+    }
+    return consultasBuscadas;
+    }
 }
+
 
 /* 
 

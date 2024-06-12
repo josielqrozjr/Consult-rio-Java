@@ -4,16 +4,13 @@
  */
 package application;
 
+import entities.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-
-import entities.*;
 
 /**
  *
@@ -25,16 +22,6 @@ public class Menu extends javax.swing.JFrame {
     private List<Paciente> pacientes;
     private List<Medico> medicos;    
     
-    /**
-     * Creates new form Menu
-     */
-
-     /* 
-    public Menu() {
-        initComponents();
- 
-    }
-    */
     
     // Caso queira apagar este construtor é necessário ir no "InterfaceUser" e quando for instanciar Menu passar as três listas, com isso o programa passa a utilizar o contrutor abaixo
     public Menu() {
@@ -45,7 +32,8 @@ public class Menu extends javax.swing.JFrame {
         this.consultas = consultas;
         this.pacientes = pacientes;
         this.medicos = medicos;
-        initComponents();
+        initComponents(); // Iniciar os componentes da interface da aplicação 
+        setLocationRelativeTo(null); // Para a interface abrir sempre no centralizada
     }
 
     public static  List<Consulta> recebeConsultas(List<Consulta> consultas){
@@ -205,13 +193,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         
-        /*
-        for(int i = 0; i < medicos.size(); i++){
-            Medico medico = medicos.get(i);
-            String nome_medico = medico.getNome();
-            String[] = nome_medico;
-        } 
-        */
         
         // Criando um array de Strings para armazenar os nomes dos médicos
         String[] nomesMedicos = new String[medicos.size()];
@@ -425,7 +406,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Heiti TC", 0, 14)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(242, 242, 242));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel17.setText("                 Data");
+        jLabel17.setText("                 Data (DD-MM-AAAA)");
 
         pTextData.setFont(new java.awt.Font("Heiti TC", 0, 13)); // NOI18N
         pTextData.setPreferredSize(new java.awt.Dimension(64, 30));
@@ -452,6 +433,11 @@ public class Menu extends javax.swing.JFrame {
         pButton.setFont(new java.awt.Font("Heiti TC", 0, 14)); // NOI18N
         pButton.setForeground(new java.awt.Color(242, 242, 242));
         pButton.setText("Pesquisar");
+        pButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pButtonActionPerformed(evt);
+            }
+        });
 
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -539,16 +525,17 @@ public class Menu extends javax.swing.JFrame {
             // Coletando os dados do formulário
             String dataStr = cTextData.getText();
             String horarioStr = cTextHorario.getText();
-            //String medicoStr = cSelectMedico.getSelectedItem();
+            String medicoStr = (String) cSelectMedico.getSelectedItem();
             String cpfPacienteStr = cTextPaciente.getText();
 
             // Convertendo os dados para os tipos apropriados
             LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             LocalTime horario = LocalTime.parse(horarioStr, DateTimeFormatter.ofPattern("HH:mm"));
-            //int medico = Integer.parseInt(medicoStr);
 
+            int cod_medico = Medico.getCodigoMedicoPorNome(medicos, medicoStr);
+            
             // Criando o objeto Consulta
-            //Consulta consulta = new Consulta(data, horario, medico, cpfPacienteStr);
+            Consulta consulta = new Consulta(data, horario, cod_medico, cpfPacienteStr);
 
             // Aqui você pode adicionar código para salvar a consulta em um arquivo, banco de dados, etc.
             //System.out.println("Consulta cadastrada com sucesso: " + consulta);
@@ -556,15 +543,26 @@ public class Menu extends javax.swing.JFrame {
             // Limpando os campos do formulário
             cTextData.setText("");
             cTextHorario.setText("");
-            //cSelectMedico.setSelectedItem("");
+            cSelectMedico.setSelectedItem(null);
             cTextPaciente.setText("");
             
+            consultas.add(consulta);
+
+            Consulta.salvarListaDeConsultas(consultas);
+
             JOptionPane.showMessageDialog(this, "Consulta cadastrada com sucesso!");
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar consulta: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    }                                       
+    }
+    
+    private void pButtonActionPerformed(java.awt.event.ActionEvent evt) { 
+        String dataStr = cTextData.getText();
+
+        
+
+    }
 
     /**
      * @param args the command line arguments
