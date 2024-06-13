@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.*;
-
 import readers.readersCSV.DadosCSVReaderConsulta;
 import readers.readersCSV.DadosCSVReaderPaciente;
 
@@ -21,7 +20,7 @@ public class Medico implements Serializable{
     //constructor
     public Medico(String nome, int codigo){
         this.nome  = nome;
-        this.codigo = codigo;
+        this.codigo = codigo; 
         this.pacientes = new ArrayList<>();
     }
     //getters
@@ -78,6 +77,15 @@ public class Medico implements Serializable{
         return null; // Retorna null se o médico não for encontrado
     }
 
+    public static Integer getCodigoMedicoPorNome(List<Medico> medicos, String nomeMedico) {
+        for (Medico medico : medicos) {
+            if (medico.getNome().equals(nomeMedico)) {
+                return medico.getCodigo();
+            }
+        }
+        return null; // Retorna null se o médico não for encontrado
+    }
+
     //method to get the inative pacients
     public List<Paciente> getPacientesInativos(int mesesInatividade) {
         List<Consulta> consultas = DadosCSVReaderConsulta.lerConsultasDoCSV();
@@ -115,9 +123,9 @@ public class Medico implements Serializable{
 
         // Method to read a list of consultations from a file
     @SuppressWarnings("unchecked")
-    public static List<Medico> abrirMedicos(String nome_arquivo) throws IOException, ClassNotFoundException {
+    public static List<Medico> abrirMedicos() throws IOException, ClassNotFoundException {
         List<Medico> medicos = null;
-        FileInputStream arquivo = new FileInputStream(nome_arquivo);
+        FileInputStream arquivo = new FileInputStream("medicos.bin");
         ObjectInputStream restaurador = new ObjectInputStream(arquivo);
 
         medicos = (List<Medico>)restaurador.readObject();
@@ -128,13 +136,24 @@ public class Medico implements Serializable{
         return medicos;
     }
 
-    public static void salvarListaDeMedicos(List<Medico> medicos, String nome_arquivo) throws IOException, Exception{
+    public static void salvarListaDeMedicos(List<Medico> medicos) throws IOException, Exception{
 
-        FileOutputStream arquivo = new FileOutputStream(nome_arquivo);
+        FileOutputStream arquivo = new FileOutputStream("medicos.bin");
         ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
         gravador.writeObject(medicos);
         
         gravador.close();
         arquivo.close();
+    }
+
+    // Método para retornar o nome do médico a partir do seu código (passado como parâmetro)
+    public static String getNomeMedicoPorCodigo(List<Medico> medicos, int codigoMedico) {
+
+        for (Medico medico : medicos) {
+            if (medico.getCodigo() == codigoMedico) {
+                return medico.getNome();
+            }
+        }
+        return null; // Retorna null se o médico não for encontrado
     }
 }

@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import readers.readersCSV.DadosCSVReaderConsulta;
 import readers.readersCSV.DadosCSVReaderPaciente;
 
@@ -119,9 +118,9 @@ public class Paciente implements Serializable{
 
      // Method to read a list of consultations from a file
      @SuppressWarnings("unchecked")
-    public static List<Paciente> abrirPacientes(String nome_arquivo) throws IOException, ClassNotFoundException {
+    public static List<Paciente> abrirPacientes() throws IOException, ClassNotFoundException {
         List<Paciente> pacientes = null;
-        FileInputStream arquivo = new FileInputStream(nome_arquivo);
+        FileInputStream arquivo = new FileInputStream("pacientes.bin");
         ObjectInputStream restaurador = new ObjectInputStream(arquivo);
 
         pacientes = (List<Paciente>)restaurador.readObject();
@@ -132,9 +131,9 @@ public class Paciente implements Serializable{
         return pacientes;
     }
 
-    public static void salvarListaDePacientes(List<Paciente> paciente, String nome_arquivo) throws IOException, Exception{
+    public static void salvarListaDePacientes(List<Paciente> paciente) throws IOException, Exception{
 
-        FileOutputStream arquivo = new FileOutputStream(nome_arquivo);
+        FileOutputStream arquivo = new FileOutputStream("pacientes.bin");
         ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
         gravador.writeObject(paciente);
         
@@ -142,4 +141,13 @@ public class Paciente implements Serializable{
         arquivo.close();
     }
 
+    public static String getPacienteNomePorCPF(List<Paciente> pacientes, String cpf) {
+
+        for (Paciente paciente : pacientes) {
+            if (paciente.getCpf().equals(cpf)) {
+                return paciente.getNome();
+            }
+        }
+        return "Paciente não encontrado";
+    }
 }
