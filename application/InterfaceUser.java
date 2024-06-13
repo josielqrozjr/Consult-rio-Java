@@ -1,9 +1,8 @@
 package application;
 
+import entities.*;
 import java.io.IOException;
 import java.util.*;
-
-import entities.*;
 
 public class InterfaceUser{
     public static void main(String[] args) throws IOException{
@@ -12,19 +11,15 @@ public class InterfaceUser{
         String nome_do_arquivo_pacientes = "pacientes.bin";
         String nome_do_arquivo_medicos = "medicos.bin";
 
-        List<Consulta> consultas = null;
-        List<Paciente> pacientes = null;
-        List<Medico> medicos = null;
-
-        // Recupera os dados salvos no arquivo binário
+        // Recupera os dados salvos no arquivo binário de cada classe (Consulta, Paciente e Medico)
         try{
-            consultas = Consulta.abrirConsultas(nome_do_arquivo_consultas);
-            pacientes = Paciente.abrirPacientes(nome_do_arquivo_pacientes);
-            medicos = Medico.abrirMedicos(nome_do_arquivo_medicos);
+            List<Consulta> consultas = Consulta.abrirConsultas();
+            List<Paciente> pacientes = Paciente.abrirPacientes();
+            List<Medico> medicos = Medico.abrirMedicos();
 
-            System.out.println("Consultas de " + nome_do_arquivo_consultas + " recuperadas com successo!");
-            System.out.println("Consultas de " + nome_do_arquivo_pacientes + " recuperadas com successo!");
-            System.out.println("Consultas de " + nome_do_arquivo_medicos + " recuperadas com successo!");
+            System.out.println("Consultas recuperadas com successo!");
+            System.out.println("Pacientes recuperados com successo!");
+            System.out.println("Médicos recuperados com successo!");
 
             // Instaciando um objeto da classe Menu
             Menu menu = new Menu();

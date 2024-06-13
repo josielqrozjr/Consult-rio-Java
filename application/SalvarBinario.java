@@ -16,20 +16,16 @@ public class SalvarBinario{
         // Passo 3: Ler médicos e associar pacientes
         List<Medico> medicos = DadosCSVReaderMedico.lerMedicosDoCSV(pacientes);
 
-        String nome_do_arquivo_consultas = "consultas.bin";
-        String nome_do_arquivo_pacientes = "pacientes.bin";
-        String nome_do_arquivo_medicos = "medicos.bin";
-
         // Salva os dados lidos no CSV no arquivo binário
         try {
             Consulta.salvarListaDeConsultas(consultas);
-            Paciente.salvarListaDePacientes(pacientes, nome_do_arquivo_pacientes);
-            Medico.salvarListaDeMedicos(medicos, nome_do_arquivo_medicos);
+            System.out.println("Consultas salvas em binário com successo!");
 
-            System.out.println("Consultas salvas em " + nome_do_arquivo_consultas + " com successo!");
-            System.out.println("Pacientes salvos em " + nome_do_arquivo_pacientes + " com successo!");
-            System.out.println("Médicos salvos em " + nome_do_arquivo_medicos + " com successo!");
+            Paciente.salvarListaDePacientes(pacientes);
+            System.out.println("Pacientes salvos em binário com successo!");
 
+            Medico.salvarListaDeMedicos(medicos);
+            System.out.println("Médicos salvos em binário com successo!");
 
         } catch (IOException e) {
             System.out.println("Excecao de I/O");

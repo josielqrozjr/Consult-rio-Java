@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -36,16 +37,20 @@ public class Menu extends javax.swing.JFrame {
         setLocationRelativeTo(null); // Para a interface abrir sempre no centralizada
     }
 
-    public static  List<Consulta> recebeConsultas(List<Consulta> consultas){
-        return consultas;
-    }
+    private void atualizarTabela(List<Consulta> consultas) {
+        DefaultTableModel model = (DefaultTableModel) pTable.getModel();
+        model.setRowCount(0); // Limpa a tabela antes de adicionar os novos dados
 
-    public static List<Paciente> recebePacientes(List<Paciente> pacientes){
-        return pacientes;
+        for (Consulta consulta : consultas) {
+            String data = consulta.getData().toString();
+            String horario = consulta.getHorario().toString();
+            String medicoNome = Medico.getNomeMedicoPorCodigo(medicos, consulta.getMedico());
+            String pacienteNome = Paciente.getPacienteNomePorCPF(pacientes, consulta.getCpfPaciente());
+            
+            model.addRow(new Object[]{data, horario, medicoNome, pacienteNome});
     }
-    public static List<Medico> recebeMedicos(List<Medico> medicos){
-        return medicos;
-    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -204,7 +209,7 @@ public class Menu extends javax.swing.JFrame {
 
         // cSelectMedico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-
+        // Colocando no seletor o nome dos médicos, que foram convertidos em um array de Strings
         cSelectMedico.setModel(new javax.swing.DefaultComboBoxModel<>(nomesMedicos));
         cSelectMedico.setSize(new java.awt.Dimension(64, 21));
 
@@ -274,6 +279,11 @@ public class Menu extends javax.swing.JFrame {
         aButton.setFont(new java.awt.Font("Heiti TC", 0, 14)); // NOI18N
         aButton.setForeground(new java.awt.Color(242, 242, 242));
         aButton.setText("Confirmar");
+        aButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aButtonActionPerformed(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Heiti TC", 0, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(242, 242, 242));
@@ -560,7 +570,32 @@ public class Menu extends javax.swing.JFrame {
     private void pButtonActionPerformed(java.awt.event.ActionEvent evt) { 
         String dataStr = cTextData.getText();
 
+        // Convertendo a data para o tipo apropriado (String para LocalDate)
+        LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        try {
+            List<Consulta> consultasFiltradas = Consulta.getConsultasPorData(consultas, data);
+            atualizarTabela(consultasFiltradas);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar consulta: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+            
         
+
+    }
+
+    private void aButtonActionPerformed(java.awt.event.ActionEvent evt) { 
+            // Coletando os dados do formulário
+            String dataStr = cTextData.getText();
+            String horarioStr = cTextHorario.getText();
+            String medicoStr = (String) cSelectMedico.getSelectedItem();
+            String cpfPacienteStr = cTextPaciente.getText();
+
+            // Convertendo os dados para os tipos apropriados
+            LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalTime horario = LocalTime.parse(horarioStr, DateTimeFormatter.ofPattern("HH:mm"));
+ 
+            int cod_medico = Medico.getCodigoMedicoPorNome(medicos, medicoStr);
 
     }
 
